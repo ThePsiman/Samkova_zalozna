@@ -21,7 +21,6 @@ def playerInput(board):
     if inp >= 1 and inp <= 9 and board[inp-1] == '-':
         board[inp-1] = cp
     else:
-        gameRunning = False
         print('ERROR :)')
         
 
@@ -61,13 +60,17 @@ def checkDiagonal(board):
     
 def checkTie(board):
     if '-' not in board:
+        printBoard(board)
         print('----------Tie----------')
-        return True
+        global gameRunning
+        gameRunning = False
 
 def checkWin():
     if checkHorizontal(board) or checkDiagonal(board) or checkVertical(board):
+        printBoard(board)
         print(f'----------Winner: {winner}----------')
-        return True
+        global gameRunning
+        gameRunning = False
 
 # switch player
 def switchPlayer():
@@ -77,15 +80,10 @@ def switchPlayer():
     else:
         cp = 'X'
 
-# stop game
-def checkStop():
-    if checkWin() or checkTie(board):
-        gameRunning = False
 
-while gameRunning == True:
+while gameRunning:
     printBoard(board)
     playerInput(board)
     checkWin()
     checkTie(board)
     switchPlayer()
-    checkStop()
